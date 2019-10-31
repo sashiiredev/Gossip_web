@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <section class="jumbotron text-center mb-0">
+      <div class="container mt-5 mt-md-4 mt-lg-1 pt-5 pt-md-4 pt-lg-3" id="jumjum">
+        <div class="row justify-content-md-center">
+          <div class="col-sm-6 col-sm-offset-3 mb-3">
+            <h1 class="text-center">Voici les infos de <%= @city.name %></h1>
+            <br><br>
+            <div class="card">
+              <div class="card-body">
+                <p class="card-text mt-3 mb-3">
+                  <B>Name :</B> <%= @city.name %><br><br>
+                  <B>Zip_code :</B> <%= @city.zip_code %><br><br>
+                </P>
+                <% User.where(city_id: params[:id]).each do |user| %>
+                <% Gossip.where(user_id: user).each do |gossip| %>
+                <div class="container mb-5 pt-2 border">
+                  <h2>Gossip #<%=gossip.id%></h2>
+                  <h5><%=gossip.title%></h5>
+                  <p><%=user.first_name%> <%=user.last_name%></p>
+                  <p><%=City.find(user.city_id).name%></p>
+
+                  <p><a class="btn btn-dark" <%= link_to "Voir", gossip_path(gossip.id)%></a></p>
+                  <% if logged_in? %>
+                  <% unless already_like?(gossip) %>
+                    <form action="/gossips/<%= gossip.id %>/like" method="post">
+                      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                      <button class="btn btn-success mb-4" type="submit"><i class="fa fa-thumbs-up"> Like | <%=gossip.likes.length%></i> </button>
+                    </form>
+                  <% else %>
+                    <% @like = find_like(gossip) %>
+                      <a href="<%= gossip_like_path(gossip.id, like.id) %>" data-method="delete"><button class="btn btn-danger mb-4" type="submit"><i class="fa fa-thumbs-down"> Unlike | <%=gossip.likes.length%></i> </button></a>
+                  <% end %>
+                  <%else%>
+                  <form action="/gossips/<%= gossip.id %>/like" method="post">
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <button class="btn btn-success mb-4" type="submit"><i class="fa fa-thumbs-up"> Like | <%=gossip.likes.length%></i> </button>
+                  <%end%>
+                </div>
+                <%end%>
+                <%end%>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

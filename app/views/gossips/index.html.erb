@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body class="to_bg">
+  <section class="container">
+    <div class="row mt-5 mb-3">
+      <div class="col">
+        <h1 class="text-center">Bonjour</h1>
+        <br><br>
+        <h2 class="text-center">Voici tous les gossips, n'hesite pas a les lire :)</h2>
+        <br><br>
+        <h3 class="text-center"><%= link_to "Creer un gossip", new_gossip_path %></h3>
+      </div>
+    </div>
+
+      <% @gossips.reverse.each_slice(3) do |gossip| %>
+      <div class="card-deck">
+        <% gossip.each do |gossip|%>
+
+      <div class="card mb-4">
+        <h4 class="card-header"><%= gossip.title %><small class="ml-4">n°<%=gossip.id%></small></h4>
+        <div class="card-body">
+          <p class="card-text">
+            <%= gossip.content %><br/>
+          </p>
+          <small class="text-muted"><%= gossip.user.first_name %></small><br><br>
+          <small><B><%=gossip.comments.length%> commentaires</B></small>
+          <br><br>
+          <% if logged_in? %>
+          <% unless already_like?(gossip) %>
+            <form action="/gossips/<%= gossip.id %>/like" method="post">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <button class="btn btn-success mr-4" type="submit"><i class="fa fa-thumbs-up"> Like</i> </button>
+              <%=gossip.likes.length%> likes
+            </form>
+          <% else %>
+            <% @like = find_like(gossip) %>
+              <a href="<%= gossip_like_path(gossip.id, @like.id) %>" data-method="delete"><button class="btn btn-danger mr-4" type="submit"><i class="fa fa-thumbs-down"> Unlike</i> </button></a>
+              <%=gossip.likes.length%> likes
+          <% end %>
+          <%else%>
+          <form action="/gossips/<%= gossip.id %>/like" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <button class="btn btn-success mr-4" type="submit"><i class="fa fa-thumbs-up"> Like</i> </button>
+            <%=gossip.likes.length%> likes
+            </form>
+          <%end%>
+        <br><br>
+          <a href="<%= gossip_path(gossip.id) %>"><button type="button" class="btn btn-primary">Show</button></a>
+        </div>
+      </div>
+      <%end%>
+      </div>
+      <%end%>
+
+  </section>
+
+  </body>
+</html>

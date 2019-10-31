@@ -1,0 +1,33 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome</title>
+  </head>
+  <body>
+    <section class="container">
+      <div class="row mt-5 mb-3">
+        <div class="col">
+          <h1 class="text-center">Identification</h1>
+          <br><br>
+          <h2 class="text-center">Veuillez rentrer vos identifiants</h2>
+          <br>
+        </div>
+      </div>
+      <div class="container">
+        <%= form_tag url_for(action: 'create'), method: "post" do %>
+          <div class="form-group">
+          <%= label_tag 'Email' %>
+          <%= text_field_tag 'user_email', nil, placeholder: 'Email', class: 'form-control' %>
+          </div>
+          <div class="form-group">
+          <%= label_tag 'Mot de passe' %>
+          <%= text_field_tag 'user_password', nil, placeholder: 'password', class: 'form-control' %>
+          </div>
+          <br>
+          <%= submit_tag "validate", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+
+    </section>
+  </body>
+</html>

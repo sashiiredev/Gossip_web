@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <section class="container">
+      <div class="row mt-5 mb-3">
+        <div class="col">
+          <h1 class="text-center">Voici le gossip</h1>
+          <br><br>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="card-text">
+            <h2><%= @gossip.title %></h2><br>
+            <h4><%= @gossip.content %></h4><br>
+            <p><%=@gossip.user.first_name%> <%=@gossip.user.last_name%>, <%=@gossip.user.city.name%></p><br>
+          </div>
+          <% if logged_in? %>
+            <% unless already_like?(@gossip) %>
+              <form action="/gossips/<%= @gossip.id %>/like" method="post">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <button class="btn btn-success mr-4" type="submit"><i class="fa fa-thumbs-up"> Like</i> </button>
+                <%=@gossip.likes.length%> likes
+              </form>
+            <% else %>
+              <% @like = find_like(@gossip) %>
+                <a href="<%= gossip_like_path(@gossip.id, @like.id) %>" data-method="delete"><button class="btn btn-danger mr-4" type="submit"><i class="fa fa-thumbs-down"> Unlike</i> </button></a>
+                <%=@gossip.likes.length%> likes
+            <% end %>
+            <%end%>
+          <br><br>
+
+          <p><B>Commentaires : </B></p>
+          <p>
+            <% @gossip.comments.each do |comment|%>
+            <div class="container ml-0 pl-0 pt-2 pb-2 border-top">
+              <B><%= comment.user.first_name %></B> : <%= comment.content %><br>
+              <% if is_author?(comment.user)%>
+              <small><a href="<%= edit_gossip_comment_path(@gossip.id, comment.id) %>">Edit </a>/ </small>
+              <% end %>
+              <small><a href="<%= user_path(comment.user.id) %>">Author</a></small>
+            </div>
+            <%end%>
+          </p>
+          <div class="container ml-0 pl-0 mt-4 mb-4 pt-4 pb-4 border-top border-bottom">
+          <p><B>Ajouter un commentaire : </B></p>
+          <form action="<%= gossip_comment_index_path(@gossip.id) %>" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <div class="form-group">
+              <label for="input_first">Ecris ton commentaire</label>
+              <input type="text" name="user_comment" class="form-control" id="input_first" placeholder="Enter comment">
+            </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+        <br>
+
+          <a href="<%=user_path(@gossip.user.id)%>"><button type="button" class="btn btn-primary">Author</button></a>
+          <a href="<%=city_path(@gossip.user.city.id)%>"><button type="button" class="btn btn-primary">City</button></a>
+          <% if is_author?(@gossip.user) %>
+            <a href="<%= edit_gossip_path(@gossip.id) %>"><button type="button" class="btn btn-warning">Edit</button></a>
+            <a href="<%= gossip_path(@gossip.id) %>" class="btn btn-danger" data-confirm="Are you sure ?" data-method="delete">Delete</a>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

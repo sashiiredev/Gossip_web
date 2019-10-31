@@ -1,0 +1,29 @@
+// Place all the styles related to the static_pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.to_bg {
+  height: 100vh;
+  background: linear-gradient(
+  rgba(230,230,230,0.60),
+  rgba(230,230,230,0.60)
+  )
+}
+
+#monjum {
+  height: 100vh;
+  background: linear-gradient(
+  rgba(152,152,152,0.60),
+  rgba(152,152,152,0.60)
+  ), url(gossip_pic.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+
+.card {
+  background: linear-gradient(
+  rgba(255,255,255,0.60),
+  rgba(255,255,255,0.60)
+  );
+}

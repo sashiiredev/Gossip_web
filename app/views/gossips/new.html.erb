@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome</title>
+  </head>
+  <body>
+    <section class="container">
+      <div class="row mt-5 mb-3">
+        <div class="col">
+          <h1 class="text-center">Bienvenue sur la page de creation de potin</h1>
+          <br><br>
+          <h2 class="text-center">Je t'invite a remplir ce formulaire</h2>
+          <br>
+        </div>
+      </div>
+      <div class="container">
+        <%= form_tag url_for(action: 'create'), method: "post" do %>
+          <div class="form-group">
+            <%= label_tag 'title' %>
+            <%= text_field_tag 'title', nil, placeholder: 'Entrer le titre du Gossip', class: 'form-control' %>
+          </div>
+          <div class="form-group">
+          <%= label_tag 'content' %>
+          <%= text_area_tag 'content', nil, placeholder: 'Entrer le contenue du Gossip', class: 'form-control' %>
+          </div>
+          <br>
+          <%= submit_tag "Create Post", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </section>
+  </body>
+</html>
